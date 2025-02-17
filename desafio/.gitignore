@@ -4,7 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-src/main/java/com/course/desafio/entities/
+
 
 ### STS ###
 .apt_generated
