@@ -21,7 +21,7 @@ public class Participante {
 	
 	private String nome;
 	
-	@Column(columnDefinition = "UNIQUE")
+	@Column(unique = true)
 	private String email;
 
 	@ManyToMany(mappedBy = "participantes")
