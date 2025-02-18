@@ -2,6 +2,7 @@ package com.course.desafio.entities;
 
 import java.time.Instant;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,11 +19,13 @@ public class Bloco {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant inicio;
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant fim;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_atividade")
+	@JoinColumn(name = "atividade_id")
 	private Atividade atividade;
 	
 	
