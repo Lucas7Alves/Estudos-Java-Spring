@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,11 +40,20 @@ public class ProductController {
 	@PostMapping
 	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
 		dto = productService.insert(dto);
+		
+		//Este URI permite retornar o codigo 201 no HTTP + nova URL do produto
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
+		
 		return ResponseEntity.created(uri).body(dto);
+	}
+	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
+		dto = productService.update(id, dto);
+		return ResponseEntity.ok(dto);
 	}
 
 }
