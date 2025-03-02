@@ -25,9 +25,6 @@ public class Product {
 	private Long id;
 	private String name;
 	
-	@Column(unique = true)
-	private String email;
-	
 	@Column(columnDefinition = "TEXT")
 	private String description;
 
