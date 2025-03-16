@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.devsuperior.dsecommerce.dto.ProductDTO;
 import com.devsuperior.dsecommerce.entities.Product;
 import com.devsuperior.dsecommerce.repositories.ProductRepository;
+import com.devsuperior.dsecommerce.services.exception.ResourceNotFoundException;
 
 @Service
 public class ProductService {
@@ -23,7 +24,8 @@ public class ProductService {
 	
 	@Transactional(readOnly = true)	
 	public ProductDTO findById(Long id) {
-		return new ProductDTO( productRepository.findById(id).get() );
+		return new ProductDTO( productRepository.findById(id).orElseThrow(
+				() -> new ResourceNotFoundException("Product not found")));
 	}
 	
 	@Transactional(readOnly = true)
