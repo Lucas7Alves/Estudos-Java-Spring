@@ -19,6 +19,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.devsuperior.dsecommerce.dto.ProductDTO;
 import com.devsuperior.dsecommerce.services.ProductService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/products")
 public class ProductController {
@@ -39,7 +41,7 @@ public class ProductController {
 	}
 
 	@PostMapping
-	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {
+	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {
 		dto = productService.insert(dto);
 		
 		//Este URI permite retornar o codigo 201 no HTTP + nova URL do produto
@@ -52,7 +54,7 @@ public class ProductController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
+	public ResponseEntity<ProductDTO> update(@PathVariable Long id,@Valid  @RequestBody ProductDTO dto) {
 		dto = productService.update(id, dto);
 		return ResponseEntity.ok(dto);
 	}
