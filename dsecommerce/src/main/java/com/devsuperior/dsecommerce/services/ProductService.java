@@ -1,19 +1,17 @@
 package com.devsuperior.dsecommerce.services;
 
-import java.sql.Savepoint;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.devsuperior.dsecommerce.dto.ProductDTO;
 import com.devsuperior.dsecommerce.entities.Product;
 import com.devsuperior.dsecommerce.repositories.ProductRepository;
+import com.devsuperior.dsecommerce.services.exception.DatabaseException;
 import com.devsuperior.dsecommerce.services.exception.ResourceNotFoundException;
 
 @Service
@@ -48,9 +46,17 @@ public class ProductService {
 		return new ProductDTO(productRepository.save(entity));
 	}
 
-	@Transactional
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public void delete(Long id) {
-		productRepository.deleteById(id);
+		if (!productRepository.existsById(id)) {
+			throw new ResourceNotFoundException("Recurso não encontrado");
+		}
+		
+		try {			
+			productRepository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Falha de integridade referencial");
+		}
 	}
 	
 	private void copyDtoToEntity(ProductDTO dto, Product entity) {
